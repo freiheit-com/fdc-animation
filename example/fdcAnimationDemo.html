@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<script type="text/javascript" src="lib/zepto.min.js"></script>
+<script type="text/javascript" src="lib/underscore.min.js"></script>
+<script type="text/javascript" src="../lib/fdcAnimation.js"></script>
+<script type="text/javascript">
+$(function() {
+
+    function restart(f) {
+        return function() {
+           var cube = $('#cube');
+           cube.css('left', 0);
+           cube.css('top', 0);
+
+           var cube2 = $('#cube2');
+           cube2.css('left', 100 );
+           cube2.css('top', 100);
+
+           var cube3 = $('#cube3');
+           cube3.css('left', 0 );
+           cube3.css('top', 0);
+
+           f();
+        };
+    }
+
+    (function loop() {
+        var leftAnim = {property: 'left',  obj: [$('#cube'), $('#cube2') ], endValueAbsolute: 400, duration: 5000 };
+        var leftAnim2 = {property: 'left', obj: [$("#cube3")], endValueAbsolute: 400, duration: 5000, timeTrafo: Math.sqrt };
+        var rightAnim = {property: 'top',  obj: [$('#cube'), $('#cube2') ], endValueAbsolute: 400, duration: 5000 };
+        var rightAnim2 = {property: 'top', obj: [$("#cube3")], endValueAbsolute: 400, duration: 5000, afterAnimation: restart(loop), timeTrafo: Math.sqrt };
+        fdcAnimation.animLinearCssNum(leftAnim);
+        fdcAnimation.animLinearCssNum(rightAnim);
+        fdcAnimation.animLinearCssNum(leftAnim2);
+        fdcAnimation.animLinearCssNum(rightAnim2);
+    })();
+
+    function slideIn() {
+        var slideIn = {property: 'left', obj: $('#box'), endValueAbsolute: 0, duration: 2000, afterAnimation: slideOut };
+        fdcAnimation.animLinearCssNum(slideIn);
+    }
+
+    function slideOut() {
+        var slideOut = {property: 'left', obj: $('#box'), endValueAbsolute: -100, duration: 2000, afterAnimation: slideIn };
+        fdcAnimation.animLinearCssNum(slideOut);
+    }
+
+    function fadeIn() {
+        var fadeIn = {property: 'opacity', obj: $('#pony'), endValueAbsolute: 1, duration: 2000, afterAnimation: fadeOut };
+        fdcAnimation.animLinearCssNum(fadeIn);
+    }
+
+    function fadeOut() {
+        var fadeOut = {property: 'opacity', obj: $('#pony'), endValueAbsolute: 0, duration: 2000, afterAnimation: fadeIn };
+        fdcAnimation.animLinearCssNum(fadeOut);
+    }
+
+    slideOut();
+    fadeOut();
+});
+</script>
+<title>Test fdcAnimation</title>
+</head>
+
+<body id="body">
+    <div id="cube"  style="position: absolute; width:50px; height:50px; background-color: pink;"></div>
+    <div id="cube2" style="position: absolute; width:50px; height:50px; background-color: red; left: 100px; top: 100px;"></div>
+    <div id="cube3" style="position: absolute; width:50px; height:50px; background-color: blue;"></div>
+
+    <div id="box" style="position: absolute; width:100px; height:200px; background-color: yellow; position-left: 0px; position-top: 30px;"></div>
+
+    <img id="pony" src="pony.gif" style="position: absolute; width:106px; height: 126px; left: 600px;"></img>
+
+    <div style="position: absolute; bottom: 0px">
+        The pony is from <a href="http://desktop-pony-team.deviantart.com/">http://desktop-pony-team.deviantart.com/</a>
+    </div>
+</body>
+
+</html>
